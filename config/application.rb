@@ -39,5 +39,8 @@ module SoloSync
       end
     end
     
+    config.session_store :cookie_store, key: '_solosync_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end

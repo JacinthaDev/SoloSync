@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Login from './components/Login';
+import AuthForm from './components/AuthForm';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <h1>Welcome to SoloSync</h1>
       </header>
-      <Login /> 
+      <AuthForm /> 
     </div>
   );
 }
