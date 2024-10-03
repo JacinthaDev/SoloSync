@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AuthForm.css'; 
 
 function AuthForm() {
@@ -11,6 +12,7 @@ function AuthForm() {
     confirmPassword: '',
   });
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -25,7 +27,7 @@ function AuthForm() {
       alert('Passwords do not match!');
       return;
     }
-    // Send data to backend or API
+  
     console.log(`${isLogin ? 'Login' : 'Signup'} form submitted:`, formData);
 
     const url = isLogin ? '/api/login' : '/api/signup';
@@ -49,6 +51,7 @@ function AuthForm() {
     .then(data => {
       console.log(data);
       setMessage('You have successfully logged in!');
+      navigate('/home');
     })
     .catch(error => {
       console.error('Error:', error);
@@ -70,7 +73,7 @@ function AuthForm() {
       <form onSubmit={handleSubmit}>
         <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
 
-        {!isLogin && ( // Only show these fields for sign up
+        {!isLogin && (
           <>
             <div className="form-group">
               <label htmlFor="name">Name:</label>
@@ -80,7 +83,7 @@ function AuthForm() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                required={!isLogin} // Required for sign up
+                required={!isLogin} 
               />
             </div>
 
@@ -121,7 +124,7 @@ function AuthForm() {
           />
         </div>
         
-        {!isLogin && ( // Show confirm password only for sign up
+        {!isLogin && ( 
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password:</label>
             <input
