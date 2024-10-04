@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Import React Router
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  
 import './App.css';
 import AuthForm from './components/AuthForm';
-import HomePage from './components/HomePage';  // Import HomePage
+import HomePage from './components/HomePage';  
 
 function App() {
   return (

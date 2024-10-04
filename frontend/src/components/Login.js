@@ -7,7 +7,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // API call to backend to log in
     console.log('Logging in with:', { email, password });
   };
 

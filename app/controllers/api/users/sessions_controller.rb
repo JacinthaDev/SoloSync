@@ -9,6 +9,9 @@ module Api
         sign_in(resource_name, resource)
         yield resource if block_given?
 
+        session[:user_id] = resource.id 
+        Rails.logger.debug("Signed in User: #{resource.inspect}")
+
         render json: { success: true, user: resource, message: "You have successfully signed in" }, status: :ok
       rescue StandardError => e
         render json: { success: false, error: e.message }, status: :unauthorized

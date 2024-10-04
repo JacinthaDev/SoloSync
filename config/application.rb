@@ -31,16 +31,15 @@ module SoloSync
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*' # Change this to the specific domain in production
+        origins '*'
         resource '*',
           headers: :any,
           methods: [:get, :post, :put, :patch, :delete, :options, :head],
           expose: ['access-token', 'expiry', 'token-type', 'uid', 'client']
       end
     end
-    
-    config.session_store :cookie_store, key: '_solosync_session'
+
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    config.middleware.use ActionDispatch::Session::CookieStore    
   end
 end
