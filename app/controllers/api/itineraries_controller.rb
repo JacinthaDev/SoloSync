@@ -5,7 +5,7 @@ require 'uri'
 module Api
   class ItinerariesController < ApplicationController
     before_action :set_user, only: %i[ create ]
-    before_action :authenticate_user!
+
 
     def index
       render json: ISO3166::Country.all.map { |country| { name: country.iso_short_name, alpha2: country.alpha2 } }

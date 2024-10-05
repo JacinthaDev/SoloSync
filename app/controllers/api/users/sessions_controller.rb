@@ -2,26 +2,38 @@ module Api
   module Users
     class SessionsController < Devise::SessionsController 
       respond_to :json
+      #skip_forgery_protection only: [:create]
 
-      def create
-        request.env['devise.mapping'] = Devise.mappings[:user] 
-        self.resource = warden.authenticate!(auth_options)
-        sign_in(resource_name, resource)
-        yield resource if block_given?
+    def destroy 
+      @logged_in_user = current_user
+      super 
+    end
 
-        @user = current_user
-        current_user = resource.id 
-        Rails.logger.debug("Signed in User: #{resource.inspect}")
+    private
 
-        render json: { success: true, user: resource, message: "You have successfully signed in" }, status: :ok
-      rescue StandardError => e
-        render json: { success: false, error: e.message }, status: :unauthorized
+    def respond_with(resource, _opts = {})
+      if !resource.id.nil?
+        #cookies["CSRF-TOKEN"] = { value: form_authenticity_token, secure: true, same_site: :None, partitioned: true }
+        #response.set_header('X-CSRF-Token', form_authenticity_token)
+        render json: { message: 'You are logged in.' }, status: :created
+      else
+        render json: { message: 'Authentication failed.'}, status: :unauthorized
       end
+    end
 
-      protected
+    def respond_to_on_destroy
+      log_out_success && return if @logged_in_user
 
-      def respond_with(resource, _opts = {})
-      end
+      log_out_failure
+    end
+
+    def log_out_success
+      render json: { message: "You are logged out." }, status: :ok
+    end
+
+    def log_out_failure
+      render json: { message: "Hmm nothing happened."}, status: :unauthorized
+    end
     end
   end
 end

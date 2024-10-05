@@ -7,8 +7,8 @@ const TripForm = () => {
   const [formData, setFormData] = useState({
     city: '',
     country: '',
-    startdate: '',
-    enddate: '',
+    start_date: '',
+    end_date: '',
     description: '',
   });
   
@@ -95,16 +95,16 @@ const TripForm = () => {
 
 
     const today = new Date().toISOString().split("T")[0]; 
-    const { startdate, enddate } = formData;
+    const { start_date, end_date } = formData;
 
 
-    if (startdate < today) {
+    if (start_date < today) {
       alert("The start date cannot be in the past.");
       return; 
     }
 
   
-    if (enddate < startdate) {
+    if (end_date < start_date) {
       alert("The end date must be later than the start date.");
       return;
     }
@@ -128,8 +128,8 @@ const TripForm = () => {
       setFormData({
         city: '',
         country: '',
-        startdate: '',
-        enddate: '',
+        start_date: '',
+        end_date: '',
         description: '',
       });
       setIsPrefilled(false); 
@@ -190,8 +190,8 @@ const TripForm = () => {
             Start Date:
             <input
               type="date"
-              name="startdate"
-              value={formData.startdate}
+              name="start_date"
+              value={formData.start_date}
               onChange={handleChange}
               min={today}
             />
@@ -200,16 +200,16 @@ const TripForm = () => {
             End Date:
             <input
               type="date"
-              name="enddate"
-              value={formData.enddate}
+              name="end_date"
+              value={formData.end_date}
               onChange={handleChange}
-              min={formData.startdate || today}
+              min={formData.start_date || today}
             />
           </label>
         </>
       )}
 
-      {formData.startdate && formData.enddate && (
+      {formData.start_date && formData.end_date && (
         <label>
           Tell other Syncers why you're traveling:
           <textarea
