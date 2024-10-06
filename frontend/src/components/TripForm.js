@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const TripForm = () => {
+const TripForm = ({ userId }) => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
@@ -36,16 +36,12 @@ const TripForm = () => {
       if (formData.country) {
         try {
           const country = countries.find((c) => c.name === formData.country);
-          const response = await fetch(`/api/itineraries/cities?country_code=${country.alpha2}`);
-          
+          const response = await fetch(`/api/cities?country_code=${country.alpha2}`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-      
           const data = await response.json();
-          
           setCities(data);
-          
           if (data.length > 0) {
             setCityName(data[0].name); 
             setIsPrefilled(true); 
@@ -61,13 +57,6 @@ const TripForm = () => {
     };
     fetchCities();
   }, [formData.country, countries]);
-
-
-
-
-
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,39 +81,29 @@ const TripForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
     const today = new Date().toISOString().split("T")[0]; 
     const { start_date, end_date } = formData;
-
-
     if (start_date < today) {
       alert("The start date cannot be in the past.");
       return; 
     }
-
-  
     if (end_date < start_date) {
       alert("The end date must be later than the start date.");
       return;
     }
-
     try {
-      const response = await fetch('/api/itineraries', {
+      const response = await fetch(`/api/users/${userId}/itineraries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) {
         throw new Error('Failed to create itinerary');
       }
-
       const result = await response.json();
       console.log('Itinerary created:', result);
-
       setFormData({
         city: '',
         country: '',
@@ -161,7 +140,6 @@ const TripForm = () => {
           ))}
         </datalist>
       </label>
-
       {formData.country && (
         <label>
           City:
@@ -183,7 +161,6 @@ const TripForm = () => {
           </datalist>
         </label>
       )}
-
       {formData.city && (
         <>
           <label>
@@ -208,7 +185,6 @@ const TripForm = () => {
           </label>
         </>
       )}
-
       {formData.start_date && formData.end_date && (
         <label>
           Tell other Syncers why you're traveling:
@@ -220,7 +196,6 @@ const TripForm = () => {
           />
         </label>
       )}
-
       <button type="submit">Create Itinerary</button>
     </form>
   );

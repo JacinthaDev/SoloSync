@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AuthForm.css';
 
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,8 +28,6 @@ function AuthForm() {
       return;
     }
 
-    console.log(`${isLogin ? 'Login' : 'Signup'} form submitted:`, formData);
-
     const url = isLogin ? '/api/login' : '/api/signup';
     const payload = isLogin
       ? { user: { email: formData.email, password: formData.password } }
@@ -57,7 +54,6 @@ function AuthForm() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         setMessage('You have successfully logged in!');
         navigate('/home');
       })
@@ -68,98 +64,106 @@ function AuthForm() {
   };
 
   return (
-    <div className="auth-form">
-      {message && (
-        <div className="message">
-          {message}
-        </div>
-      )}
-      <div className="auth-toggle">
-        <button onClick={() => setIsLogin(true)} className={isLogin ? 'active' : ''}>Login</button>
-        <button onClick={() => setIsLogin(false)} className={!isLogin ? 'active' : ''}>Sign Up</button>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-
-        {!isLogin && (
-          <>
-            <div className="form-group">
-              <label htmlFor="first_name">First Name:</label>
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="last_name">Last Name:</label>
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="date_of_birth">Date of Birth:</label>
-              <input
-                type="date"
-                id="date_of_birth"
-                name="date_of_birth"
-                value={formData.date_of_birth}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </>
+    <div className="container mt-5">
+      <div className="auth-form p-4 border rounded shadow">
+        {message && (
+          <div className="alert alert-success">
+            {message}
+          </div>
         )}
-
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+        <div className="d-flex justify-content-center mb-3">
+          <button onClick={() => setIsLogin(true)} className={`btn ${isLogin ? 'btn-success' : 'btn-secondary'}`}>Login</button>
+          <button onClick={() => setIsLogin(false)} className={`btn ${!isLogin ? 'btn-success' : 'btn-secondary'}`}>Sign Up</button>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-center">{isLogin ? 'Login' : 'Sign Up'}</h2>
 
-        {!isLogin && (
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password:</label>
+          {!isLogin && (
+            <>
+              <div className="form-group mb-3">
+                <label htmlFor="first_name">First Name:</label>
+                <input
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  className="form-control"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group mb-3">
+                <label htmlFor="last_name">Last Name:</label>
+                <input
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  className="form-control"
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group mb-3">
+                <label htmlFor="date_of_birth">Date of Birth:</label>
+                <input
+                  type="date"
+                  id="date_of_birth"
+                  name="date_of_birth"
+                  className="form-control"
+                  value={formData.date_of_birth}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </>
+          )}
+
+          <div className="form-group mb-3">
+            <label htmlFor="email">Email:</label>
             <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              type="email"
+              id="email"
+              name="email"
+              className="form-control"
+              value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
-        )}
+          <div className="form-group mb-3">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
-      </form>
+          {!isLogin && (
+            <div className="form-group mb-3">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                className="form-control"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+
+          <button type="submit" className="btn btn-success w-100">{isLogin ? 'Login' : 'Sign Up'}</button>
+        </form>
+      </div>
     </div>
   );
 }

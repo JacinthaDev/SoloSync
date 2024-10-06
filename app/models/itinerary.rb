@@ -1,6 +1,5 @@
 class Itinerary < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :cities
   has_many :matches
   validates :country, presence: true
   validates :city, presence: true
