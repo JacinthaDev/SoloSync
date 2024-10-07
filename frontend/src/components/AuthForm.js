@@ -55,7 +55,7 @@ function AuthForm() {
       })
       .then(data => {
         setMessage('You have successfully logged in!');
-        navigate('/home');
+        navigate('/api/users/${user_id}/itineraries');
       })
       .catch(error => {
         console.error('Error:', error);

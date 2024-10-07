@@ -6,7 +6,7 @@ const EditItinerary = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { user_id, id } = useParams(); // Access both user_id and id
+  const { user_id, id } = useParams(); 
 
   useEffect(() => {
     const fetchItinerary = async () => {
@@ -47,7 +47,7 @@ const EditItinerary = () => {
         throw new Error('Could not update itinerary');
       }
 
-      navigate('/');
+      navigate(`/api/users/${user_id}/itineraries`);
     } catch (error) {
       setError(error.message);
     }
@@ -55,6 +55,8 @@ const EditItinerary = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div className="container mt-5">
@@ -90,6 +92,7 @@ const EditItinerary = () => {
             className="form-control" 
             value={itinerary.start_date} 
             onChange={handleChange} 
+            min={today}
             required 
           />
         </div>
@@ -101,11 +104,12 @@ const EditItinerary = () => {
             className="form-control" 
             value={itinerary.end_date} 
             onChange={handleChange} 
+            min={itinerary.start_date || today}
             required 
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Description:</label>
+          <label className="form-label">Tell other Syncers why you're traveling:</label>
           <textarea 
             name="description" 
             className="form-control" 
@@ -118,7 +122,7 @@ const EditItinerary = () => {
         <button 
           type="button" 
           className="btn btn-secondary ms-2" 
-          onClick={() => navigate(`/api/users/${user_id}/itineraries/${id}`)}
+          onClick={() => navigate(`/api/users/${user_id}/itineraries`)}
         >
           Go Back
         </button>

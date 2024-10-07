@@ -33,32 +33,40 @@ const MyItineraries = ({ user_id }) => {
     navigate(`/api/users/${user_id}/itineraries/${id}/edit`);
   };
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long', // Full month name
+      day: 'numeric',
+    });
+  };
+
   return (
-    <div>
-      <h1>My Itineraries</h1>
-      {itineraries.map((itinerary) => (
-        <div key={itinerary.id} className="itinerary">
-          <h3>{itinerary.city}, {itinerary.country}</h3>
-          <p>Start Date: {itinerary.start_date}</p>
-          <p>End Date: {itinerary.end_date}</p>
-          <p>Description: {itinerary.description}</p>
-          <div className="d-flex justify-content-center gap-2 mt-2">
-            <button 
-              className="btn btn-primary" 
-              onClick={() => handleEdit(itinerary.id)} // Pass itinerary.id to handleEdit
-            >
-              Edit
-            </button>
-            <button 
-              className="btn btn-danger" 
-              onClick={() => handleDelete(itinerary.id)}
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
+    <div className="flex flex-col items-center">
+  <h1 className="text-2xl font-bold mb-6 mt-8">My Itineraries</h1> {/* Added margin before the title */}
+  {itineraries.map((itinerary) => (
+    <div
+      key={itinerary.id}
+      className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-300 w-full max-w-3xl" 
+    >
+      <h3 className="text-xl font-semibold mb-2">
+        {itinerary.city}, {itinerary.country}
+      </h3>
+      <p className="text-gray-700 mb-1">
+        <span className="font-medium">Start Date:</span> {formatDate(itinerary.start_date)}
+      </p>
+      <p className="text-gray-700 mb-1">
+        <span className="font-medium">End Date:</span> {formatDate(itinerary.end_date)}
+      </p>
+      <p className="text-gray-700 mb-4">{itinerary.description}</p>
+      <div className="flex justify-center gap-2 mt-2 mb-4"> 
+        <button className="btn btn-primary">Edit</button>
+        <button className="btn btn-danger">Delete</button>
+      </div>
     </div>
+  ))}
+</div>
+
   );
 };
 
