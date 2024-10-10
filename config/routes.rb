@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       resources :itineraries, except: [:cities]
     end
 
+    get '/itineraries/feed', to: 'itineraries#feed'
+    
     devise_scope :user do
       post 'login', to: 'users/sessions#create'
       post 'signup', to: 'users/registrations#create'

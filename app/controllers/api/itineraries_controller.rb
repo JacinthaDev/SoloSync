@@ -9,6 +9,11 @@ module Api
     before_action :set_user, only: %i[create update destroy index]
     before_action :set_itinerary, only: %i[show update destroy edit]
 
+    def feed
+      itineraries = Itinerary.includes(:user).all
+      render json: itineraries.as_json(include: { user: { only: [:first_name, :last_name] } }), status: :ok
+    end    
+
     def index
       render json: @user.itineraries, status: :ok
     end
