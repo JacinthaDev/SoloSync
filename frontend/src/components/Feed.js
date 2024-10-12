@@ -51,8 +51,8 @@ const Feed = () => {
             </p>
             <p className="text-gray-700 mb-4">{itinerary.description}</p>
             <div className="flex justify-center gap-2 mt-2 mb-4">
-              <button className="btn btn-primary">Edit</button>
-              <button className="btn btn-danger">Delete</button>
+              <button className="btn btn-primary">Comment</button>
+              <button className="btn btn-danger">Like</button>
             </div>
           </div>
         ))

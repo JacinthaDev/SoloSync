@@ -10,9 +10,14 @@ module Api
     before_action :set_itinerary, only: %i[show update destroy edit]
 
     def feed
-      itineraries = Itinerary.includes(:user).all
+      itineraries = Itinerary.includes(:user)
+        .where('end_date >= ?', Date.today)  
+        .order(:start_date)                  
+        .limit(params[:limit] || 10)         
+        .offset(params[:offset] || 0)
+    
       render json: itineraries.as_json(include: { user: { only: [:first_name, :last_name] } }), status: :ok
-    end    
+    end 
 
     def index
       render json: @user.itineraries, status: :ok
