@@ -5,7 +5,6 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Retrieve user ID from session storage
   const user_id = sessionStorage.getItem('user_id');
 
   const handleLogout = async () => {
@@ -59,7 +58,7 @@ function Navbar() {
               Profile
             </Link>
           )}
-          {location.pathname === '/feed' && user_id && ( // Check if user_id exists
+          {location.pathname === '/feed' && user_id && ( 
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to={`/api/users/${user_id}/itineraries`}
