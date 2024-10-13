@@ -8,7 +8,10 @@ const Feed = () => {
   useEffect(() => {
     const fetchItineraries = async () => {
       try {
-        const response = await fetch(`/api/itineraries/feed`);
+        const response = await fetch('/api/itineraries/feed'); 
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setItineraries(data);
       } catch (error) {
@@ -20,7 +23,7 @@ const Feed = () => {
   }, []);
 
   const handleShow = (user_id, itinerary_id) => {
-    navigate(`/api/users/${user_id}/itineraries/${itinerary_id}`);
+    navigate(`/api/users/${user_id}/itineraries/${itinerary_id}/show`);
   };
 
   const formatDate = (dateString) => {
@@ -57,7 +60,7 @@ const Feed = () => {
                   <div className="text-black mb-4 text-center">
                     <p className="font-bold">
                       Why{' '}
-                      <Link to={`/api/users/${itinerary.user_id}/itineraries`} className="text-blue-400 hover:underline">
+                      <Link to={`/api/users/${itinerary.user_id}/itineraries`} className="text-blue-400 hover:underline"> 
                         {itinerary.user.first_name} {itinerary.user.last_name}
                       </Link>{' '}
                       is traveling:

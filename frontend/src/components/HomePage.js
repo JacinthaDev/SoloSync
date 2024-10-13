@@ -8,8 +8,9 @@ function HomePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('/users');
+        const response = await fetch('/api/users');
         const data = await response.json();
+        console.log(data)
         setUser(data); 
       } catch (error) {
         console.error('Error fetching user data:', error);
