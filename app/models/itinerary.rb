@@ -1,6 +1,7 @@
 class Itinerary < ApplicationRecord
   belongs_to :user
-  has_many :matches
+  has_many :comments, dependent: :destroy
+  has_many :matches #might delete
   validates :country, presence: true
   validates :city, presence: true
   validates :start_date, presence: true 

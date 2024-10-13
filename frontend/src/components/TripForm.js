@@ -126,7 +126,7 @@ const TripForm = () => {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="container mx-auto p-6 bg-yellow-100 rounded-lg shadow-md max-w-lg">
       <h1 className="text-2xl font-bold mb-4 text-center">Create Your Itinerary</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block">
@@ -212,7 +212,7 @@ const TripForm = () => {
           </label>
         )}
         
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+        <button type="submit" className="w-full bg-blue-400 text-white font-bold p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
           Create Itinerary
         </button>
       </form>
