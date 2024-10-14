@@ -21,6 +21,7 @@ module Api
     end 
 
     def index
+      session[:test] = "foo"
       render json: @user.itineraries, status: :ok
     end
 

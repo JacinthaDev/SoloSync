@@ -1,40 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext'; 
 
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user_id, setUser_id] = useState(null); 
-
-  const fetchUser_id = async () => {
-    try {
-      const response = await fetch(`/api/users/${user_id}`, {
-        method: 'GET',
-        credentials: 'include', 
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user ID');
-      }
-
-      const data = await response.json();
-      console.log(data)
-      setUser_id(data.user_id); 
-    } catch (error) {
-      console.error('Error fetching user ID:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser_id(); 
-  }, []);
+  const { user, setUser } = useUser(); 
 
   const handleLogout = async () => {
-    if (!user_id) {
-      console.error('User ID not found');
-      return;
-    }
-
     try {
       const response = await fetch('/api/users/sign_out', {
         method: 'DELETE',
@@ -42,7 +15,7 @@ function Navbar() {
       });
 
       if (response.ok) {
-        setUser_id(null);
+        setUser(null); 
         navigate('/'); 
       } else {
         console.error('Failed to log out');
@@ -75,10 +48,10 @@ function Navbar() {
               Profile
             </Link>
           )}
-          {location.pathname === '/feed' && (
+          {location.pathname === '/feed' && user && (
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
-              to={`/api/users/${user_id}/itineraries`}
+              to={`/api/users/${user.id}/itineraries`}
             >
               My Trips
             </Link>

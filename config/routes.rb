@@ -1,21 +1,10 @@
 Rails.application.routes.draw do
   resources :comments
-  
-  devise_for :users, controllers: {
-    sessions: 'api/users/sessions',
-    registrations: 'users/registrations'
-  }
 
   namespace :api do
     resources :users do
-      resources :sessions, only: [:create, :destroy]
       resources :itineraries, except: [:cities]
       resources :comments, only: [:index, :create]
-    end
-
-    devise_scope :user do
-      post 'login', to: 'users/sessions#create' 
-      post 'signup', to: 'users/registrations#create'
     end
 
     get '/itineraries/feed', to: 'itineraries#feed'
@@ -23,6 +12,15 @@ Rails.application.routes.draw do
     get '/cities', to: 'itineraries#cities'
   end
 
+  # User Registration
+  post 'signup', to: 'users/registrations#create'
+
+  # User Sessions
+  post 'login', to: 'users/sessions#create'
+  delete 'logout', to: 'users/sessions#destroy'
+
   resources :users, only: [:index]
+
+  # Health check route 
   get "up" => "rails/health#show", as: :rails_health_check
 end

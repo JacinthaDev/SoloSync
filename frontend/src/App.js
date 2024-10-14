@@ -8,12 +8,15 @@ import Profile from "./components/Profile";
 import EditItinerary from './components/EditItinerary';  
 import Navbar from './components/Navbar';
 import ItineraryShow from './components/ItineraryShow';
+import { UserProvider } from './UserContext';
 
 function App() {
   return (
-    <Router>
-      <Main />
-    </Router>
+    <UserProvider>
+      <Router>
+        <Main />
+      </Router>
+    </UserProvider>
   );
 }
 
@@ -23,7 +26,6 @@ function Main() {
   return (
     <div className="App bg-blue-200 min-h-screen">
       {location.pathname !== '/' && <Navbar />}
-
       <div className={location.pathname === '/' ? "mt-0" : "mt-8"}>
         <Routes>
           <Route path="/" element={<AuthForm />} /> 
