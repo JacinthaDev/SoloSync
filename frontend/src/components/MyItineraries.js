@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
+import { format, parseISO } from 'date-fns';
 
-const MyItineraries = ({ user, user_id }) => {
+const MyItineraries = () => {
+  const { user } = useUser(); 
   const [itineraries, setItineraries] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItineraries = async () => {
+      if (!user) return;
+
       try {
         const response = await fetch(`/api/users/${user.user_id}/itineraries`);
         const data = await response.json();
@@ -18,11 +22,11 @@ const MyItineraries = ({ user, user_id }) => {
     };
 
     fetchItineraries();
-  }, [user_id]);
+  }, [user]);
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`/api/users/${user_id}/itineraries/${id}`, { method: 'DELETE' });
+      await fetch(`/api/users/${user.user_id}/itineraries/${id}`, { method: 'DELETE' });
       setItineraries(itineraries.filter(itinerary => itinerary.id !== id));
     } catch (error) {
       console.error('Error deleting itinerary:', error);
@@ -30,15 +34,12 @@ const MyItineraries = ({ user, user_id }) => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/api/users/${user_id}/itineraries/${id}/edit`);
+    navigate(`/api/users/${user.user_id}/itineraries/${id}/edit`);
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    const date = parseISO(dateString);
+    return format(date, 'MMMM d, yyyy');
   };
 
   return (

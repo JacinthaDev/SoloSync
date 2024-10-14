@@ -7,19 +7,18 @@ Rails.application.routes.draw do
       resources :comments, only: [:index, :create]
     end
 
+    get '/users/current', to: 'users#current_user'
     get '/itineraries/feed', to: 'itineraries#feed'
     get '/countries', to: 'itineraries#countries'
     get '/cities', to: 'itineraries#cities'
   end
 
-  # User Registration
-  post 'signup', to: 'users/registrations#create'
+  post '/signup', to: 'api/users#create' 
+  post '/login', to: 'users/sessions#create'
+  delete '/logout', to: 'users/sessions#destroy'
 
-  # User Sessions
-  post 'login', to: 'users/sessions#create'
-  delete 'logout', to: 'users/sessions#destroy'
+  resources :users, only: [:index, :show]
 
-  resources :users, only: [:index]
 
   # Health check route 
   get "up" => "rails/health#show", as: :rails_health_check

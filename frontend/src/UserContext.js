@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('/api/users');
+        const response = await fetch('/api/users/current');
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }

@@ -117,6 +117,7 @@ const TripForm = () => {
       });
       setIsPrefilled(false); 
       setCityName(''); 
+
       navigate(`/api/users/${user_id}/itineraries`);
     } catch (error) {
       console.error('Error creating itinerary:', error);
@@ -127,7 +128,7 @@ const TripForm = () => {
 
   return (
     <div className="container mx-auto p-6 bg-yellow-100 rounded-lg shadow-md max-w-lg">
-      <h1 className="text-2xl font-bold mb-4 text-center">Create Your Itinerary</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Create An Itinerary</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block">
           <span className="text-gray-700">Country:</span>
