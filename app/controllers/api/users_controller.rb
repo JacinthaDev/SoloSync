@@ -23,7 +23,7 @@ class Api::UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       session[:user_id] = user.id
-      render json: { message: 'User created successfully.', user_id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email, date_of_birth: user.date_of_birth }, status: :created
+      render json: { message: 'User created successfully.', user_id: user.id, user: user}, status: :created
     else
       render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end

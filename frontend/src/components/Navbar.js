@@ -9,7 +9,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/users/sign_out', {
+      const response = await fetch('/logout', {
         method: 'DELETE',
         credentials: 'include',
       });

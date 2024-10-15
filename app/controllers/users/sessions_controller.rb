@@ -12,7 +12,8 @@ module Users
       end
     end
 
-    def respond_to_on_destroy
+    def destroy
+      session[:user_id] = nil
       render json: { message: 'You are logged out.' }, status: :ok
     end
   end

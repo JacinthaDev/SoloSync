@@ -29,6 +29,10 @@ const EditComment = () => {
     fetchComment();
   }, [user_id, itinerary_id, comment_id]); 
 
+  const handleGoBack = () => {
+    navigate(`/api/users/${user_id}/itineraries/${itinerary_id}/show`);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,9 +72,15 @@ const EditComment = () => {
         required
         className="w-80 h-16 border border-gray-300 rounded-lg p-2 mb-2" 
       />
-      <button type="submit" className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition">
-        Update Comment
-      </button>
+      <div className="flex justify-center mt-4 space-x-4">
+        <button type="submit" className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition">
+          Update Comment
+        </button>
+
+        <button onClick={handleGoBack} className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition">  
+          Go Back
+        </button>
+      </div>
     </form>
   );
 };

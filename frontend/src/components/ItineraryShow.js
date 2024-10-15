@@ -96,8 +96,14 @@ const ItineraryShow = () => {
 
   const formatDate = (dateString) => {
     const date = parseISO(dateString);
+    return format(date, 'MMMM d, yyyy h:mm a');
+  };
+
+  const formatDateWithoutTime = (dateString) => {
+    const date = parseISO(dateString);
     return format(date, 'MMMM d, yyyy');
   };
+  
 
   return (
     <div className="flex flex-col items-center mt-8">
@@ -111,7 +117,7 @@ const ItineraryShow = () => {
                 {itinerary.city}, {itinerary.country}
               </h2>
               <p className="text-lg text-black text-center">
-                {formatDate(itinerary.start_date)} - {formatDate(itinerary.end_date)}
+                {formatDateWithoutTime(itinerary.start_date)} - {formatDateWithoutTime(itinerary.end_date)}
               </p>
             </div>
           </div>
@@ -119,33 +125,36 @@ const ItineraryShow = () => {
           
           <div className="mt-4">
             {comments.length > 0 ? (
-              comments.map(comment => (
-                <div key={comment.id} className="border-b border-gray-300 py-2">
-                  <p className="text-md font-semibold">{user.first_name} {user.last_name}</p>
-                  <p className="text-sm text-gray-600">{comment.content}</p>
-                  <p className="text-xs text-gray-400">{formatDate(comment.created_at)}</p>
-                  {user && user.id === comment.user_id && (
-                    <div className="flex space-x-2 mt-2">
-                      <button 
-                        className="text-blue-500 hover:underline"
-                        onClick={() => handleEdit(comment.id)}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        onClick={() => handleDelete(comment.id)}
-                        className="text-red-500 hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ))
+              <div className="max-h-60 overflow-y-scroll border-4 border-blue-300 p-4">
+                {comments.map(comment => (
+                  <div key={comment.id} className="border-b border-gray-300 py-2">
+                    <p className="text-md font-semibold">{comment.user.first_name} {comment.user.last_name}</p>
+                    <p className="text-sm text-gray-600">{comment.content}</p>
+                    <p className="text-xs text-gray-400">{formatDate(comment.created_at)}</p>
+                    {user && user.id === comment.user_id && (
+                      <div className="flex space-x-2 mt-2">
+                        <button 
+                          className="text-blue-500 hover:underline"
+                          onClick={() => handleEdit(comment.id)}
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(comment.id)}
+                          className="text-red-500 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             ) : (
               <p className="text-md text-gray-500 text-center">No comments yet.</p>
             )}
           </div>
+
 
           <form onSubmit={handleSubmit} className="mt-4">
             <textarea

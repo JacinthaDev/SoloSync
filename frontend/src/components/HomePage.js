@@ -1,4 +1,3 @@
-// src/HomePage.js
 import React from 'react';
 import TripForm from './TripForm'; 
 import MyItineraries from './MyItineraries'; 

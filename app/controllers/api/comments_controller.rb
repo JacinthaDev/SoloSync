@@ -5,9 +5,9 @@ module Api
     before_action :set_comment, only: %i[ show update destroy ]
 
     def index
-      @comments = @itinerary.comments
+      @comments = @itinerary.comments.includes(:user).order(:created_at)
 
-      render json: @comments
+      render json: @comments, include: :user
     end
 
     def show
@@ -27,7 +27,7 @@ module Api
 
     def edit
     end
-    
+
     def update
       if @comment.update(comment_params)
         render json: @comment
