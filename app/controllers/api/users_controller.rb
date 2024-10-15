@@ -1,5 +1,5 @@
 class Api::UsersController < ApplicationController
-  before_action :set_user, only: [:upload_profile_picture]
+  before_action :set_user, only: [:update]
 
   def index
     @users = User.all
@@ -31,13 +31,25 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def upload_profile_picture
-    if @user.update(profile_picture: params[:profile_picture])
+  def update
+    if params[:user][:profile_picture]
+      @user.profile_picture = params[:user][:profile_picture]
+    end
+  
+    if @user.update(user_params)
       render json: @user, status: :ok
     else
       render json: @user.errors, status: :unprocessable_entity
     end
   end
+
+  # def upload_profile_picture
+  #   if @user.update(profile_picture: params[:profile_picture])
+  #     render json: @user, status: :ok
+  #   else
+  #     render json: @user.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   private
 
@@ -46,6 +58,7 @@ class Api::UsersController < ApplicationController
   end
   
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :date_of_birth)
+    params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :date_of_birth, :bio, :profile_picture)
   end
+  
 end
