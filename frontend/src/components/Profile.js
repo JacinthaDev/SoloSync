@@ -3,53 +3,38 @@ import { useUser } from '../UserContext';
 
 const Profile = () => {
   const { user, setUser } = useUser();
-  const [bio, setBio] = useState(user?.bio || 'No bio yet');
-  const [profilePicture, setProfilePicture] = useState(user?.profilePicture || '/default.png');
+  const [bio, setBio] = useState('No bio yet');
+  const [profilePicture, setProfilePicture] = useState('/default.png');
   const [age, setAge] = useState(0);
 
   useEffect(() => {
-    if (user?.date_of_birth) {
-      const calculateAge = (dateOfBirth) => {
-        const birthDate = new Date(dateOfBirth);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-          age--;
+    const fetchUserData = async () => {
+      if (user?.id) {
+        const response = await fetch(`/api/users/${user.id}`);
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+          setBio(userData.bio || 'No bio yet');
+          setProfilePicture(userData.profile_picture || '/default.png');
+          if (userData.date_of_birth) {
+            calculateAge(userData.date_of_birth);
+          }
         }
-        return age;
-      };
-      setAge(calculateAge(user.date_of_birth));
-    }
-  }, [user]);
+      }
+    };
 
-  const handleBioChange = (event) => {
-    setBio(event.target.value);
-  };
+    fetchUserData();
+  }, [user?.id, setUser]);
 
-  const handleProfilePictureChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
-  };
-
-  const handleSave = async () => {
-    const response = await fetch(`/api/users/${user.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user: { bio, profilePicture } }),
-    });
-    if (response.ok) {
-      const updatedUser = await response.json();
-      setUser(updatedUser);
-    }
+    setAge(age);
   };
 
   return (
@@ -60,32 +45,17 @@ const Profile = () => {
         <p className="text-lg text-center mb-4">Age: {age}</p>
         
         <label className="text-lg font-semibold mb-2">Your Bio:</label>
-        <p className="text-lg text-center mb-4">
-          {bio || "No bio yet"}
-        </p>
-  
-        <textarea
-          onChange={handleBioChange}
-          placeholder="Add your bio..."
-          className="w-full h-20 border border-gray-300 rounded-lg p-2 mb-4"
-        />
-  
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleProfilePictureChange}
-          className="mb-4"
-        />
+        <p className="text-lg text-center mb-4">{bio}</p>
+        
         <button
-          onClick={handleSave}
+          onClick={() => window.location.href = '/edit-profile'} 
           className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition w-full"
         >
-          Save
+          Edit Profile
         </button>
       </div>
     </div>
   );
-  
 };
 
 export default Profile;

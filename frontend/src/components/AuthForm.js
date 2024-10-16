@@ -70,7 +70,7 @@ function AuthForm() {
           email: data.email,             
         };
 
-        setUser(data.user); // Set the user object
+        setUser(data.user); 
         if (data.user_id) {
           navigate(`/api/users/${data.user_id}/itineraries`);
         } else {

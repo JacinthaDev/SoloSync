@@ -8,7 +8,10 @@ class Api::UsersController < ApplicationController
 
   def show
     @user = User.find(session[:user_id])
-    render json: @user
+    
+    render json: @user.as_json.merge(
+      profile_picture: @user.profile_picture.attached? ? url_for(@user.profile_picture) : nil
+    )
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'User not found' }, status: :not_found
   end
@@ -43,13 +46,19 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  # def upload_profile_picture
-  #   if @user.update(profile_picture: params[:profile_picture])
-  #     render json: @user, status: :ok
-  #   else
-  #     render json: @user.errors, status: :unprocessable_entity
-  #   end
-  # end
+  def update
+    @user = User.find(params[:id])
+
+    if params[:user][:profile_picture].present?
+      @user.profile_picture.attach(params[:user][:profile_picture])
+    end
+  
+    if @user.update(user_params)
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
 
   private
 
