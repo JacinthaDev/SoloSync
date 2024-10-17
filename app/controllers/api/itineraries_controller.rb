@@ -21,12 +21,11 @@ module Api
     end 
 
     def index
-      session[:test] = "foo"
       render json: @user.itineraries, status: :ok
     end
 
     def show
-      itinerary = Itinerary.find_by(id: params[:id], user_id: params[:user_id])
+      itinerary = Itinerary.find_by(id: params[:id], user_id: session[:user_id])
       if itinerary
         render json: itinerary
       else

@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useUser } from '../UserContext'; // Import useUser
 
 const EditItinerary = () => {
+  const { user } = useUser(); // Get the user from context
+  console.log(user)
   const [itinerary, setItinerary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { user_id, id } = useParams(); 
+  const { id } = useParams(); 
 
   useEffect(() => {
     const fetchItinerary = async () => {
       try {
-        const response = await fetch(`/api/users/${user_id}/itineraries/${id}`);
+        const response = await fetch(`/api/users/${user.user_id}/itineraries/${id}`); // Use user_id from context
         if (!response.ok) {
           throw new Error('Could not fetch itinerary');
         }
@@ -24,8 +27,10 @@ const EditItinerary = () => {
       }
     };
 
-    fetchItinerary();
-  }, [id, user_id]); // Add user_id to the dependency array
+    if (user) { // Ensure user is loaded before fetching
+      fetchItinerary();
+    }
+  }, [id, user]); // Add user to the dependency array
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +40,7 @@ const EditItinerary = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/users/${user_id}/itineraries/${id}`, {
+      const response = await fetch(`/api/users/${user.user_id}/itineraries/${id}`, { // Use user_id from context
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +52,7 @@ const EditItinerary = () => {
         throw new Error('Could not update itinerary');
       }
 
-      navigate(`/api/users/${user_id}/itineraries`);
+      navigate(`/api/users/${user.user_id}/itineraries`); // Use user_id from context
     } catch (error) {
       setError(error.message);
     }
@@ -57,78 +62,84 @@ const EditItinerary = () => {
   if (error) return <p>Error: {error}</p>;
 
   const today = new Date().toISOString().split('T')[0];
+  console.log(today)
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Edit Itinerary</h1>
-      <form onSubmit={handleSubmit} className="form">
-        <div className="mb-3">
-          <label className="form-label">City:</label>
+    <div className="container mx-auto p-6 bg-yellow-100 rounded-lg shadow-md max-w-lg mt-5">
+      <h1 className="text-2xl font-bold mb-4 text-center">Edit Itinerary</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block">
+          <span className="text-gray-700">City:</span>
           <input 
             type="text" 
             name="city" 
-            className="form-control" 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" 
             value={itinerary.city} 
             onChange={handleChange} 
             required 
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Country:</label>
+        </label>
+        <label className="block">
+          <span className="text-gray-700">Country:</span>
           <input 
             type="text" 
             name="country" 
-            className="form-control" 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" 
             value={itinerary.country} 
             onChange={handleChange} 
             required 
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Start Date:</label>
+        </label>
+        <label className="block">
+          <span className="text-gray-700">Start Date:</span>
           <input 
             type="date" 
             name="start_date" 
-            className="form-control" 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" 
             value={itinerary.start_date} 
             onChange={handleChange} 
             min={today}
             required 
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">End Date:</label>
+        </label>
+        <label className="block">
+          <span className="text-gray-700">End Date:</span>
           <input 
             type="date" 
             name="end_date" 
-            className="form-control" 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" 
             value={itinerary.end_date} 
             onChange={handleChange} 
             min={itinerary.start_date || today}
             required 
           />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Tell other Syncers why you're traveling:</label>
+        </label>
+        <label className="block">
+          <span className="text-gray-700">Tell other Syncers why you're traveling:</span>
           <textarea 
             name="description" 
-            className="form-control" 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" 
             value={itinerary.description} 
             onChange={handleChange} 
             required 
           />
-        </div>
-        <button type="submit" className="btn btn-primary">Save</button>
+        </label>
+        <button 
+          type="submit" 
+          className="w-full bg-blue-400 text-white font-bold p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          Save
+        </button>
         <button 
           type="button" 
-          className="btn btn-secondary ms-2" 
-          onClick={() => navigate(`/api/users/${user_id}/itineraries`)}
+          className="w-full bg-gray-300 text-black font-bold p-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-300"
+          onClick={() => navigate(`/api/users/${user.user_id}/itineraries`)} 
         >
           Go Back
         </button>
       </form>
     </div>
-  );
+  );  
 };
 
 export default EditItinerary;
