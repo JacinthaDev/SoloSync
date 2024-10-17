@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AuthForm from './components/AuthForm';
 import HomePage from './components/HomePage';  
+import EditItinerary from './components/EditItinerary';  
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AuthForm />} /> 
           <Route path="/home" element={<HomePage />} />
+          <Route path="/api/users/:user_id/itineraries/:id/edit" element={<EditItinerary />} />
         </Routes>
       </Router>
     </div>
