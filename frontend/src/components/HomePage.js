@@ -1,24 +1,11 @@
-import React, { useEffect, useState } from 'react';
+// src/HomePage.js
+import React from 'react';
 import TripForm from './TripForm'; 
 import MyItineraries from './MyItineraries'; 
+import { useUser } from '../UserContext'; 
 
 function HomePage() {
-  const [user, setUser] = useState(null); 
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('/api/users');
-        const data = await response.json();
-        console.log(data)
-        setUser(data); 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  const { user } = useUser(); 
 
   return (
     <div className="home-page container mx-auto p-6">

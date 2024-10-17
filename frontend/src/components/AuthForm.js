@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext';
 
 function AuthForm() {
+  const { setUser } = useUser();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    first_name: '',  
-    last_name: '',  
+    first_name: '',
+    last_name: '',
     date_of_birth: '',
     email: '',
     password: '',
@@ -23,52 +25,63 @@ function AuthForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!isLogin && formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match!');
-        return;
+      alert('Passwords do not match!');
+      return;
     }
 
-    const url = isLogin ? '/api/login' : '/api/signup';
+    const url = isLogin ? '/login' : '/signup';
+
     const payload = isLogin
-        ? { user: { email: formData.email, password: formData.password } }
-        : { user: { 
-            first_name: formData.first_name, 
-            last_name: formData.last_name, 
-            date_of_birth: formData.date_of_birth, 
-            email: formData.email, 
-            password: formData.password 
-        }};
+      ? { user: { email: formData.email, password: formData.password } }
+      : {
+          user: {
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            date_of_birth: formData.date_of_birth,
+            email: formData.email,
+            password: formData.password,
+          },
+        };
 
     fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     })
-    .then(response => {
+      .then((response) => {
         if (!response.ok) {
-            throw new Error('Login failed');
+          throw new Error('Login failed');
         }
-        return response.json(); 
-    })
-    .then(data => {
-        console.log('API Response:', data); 
+        return response.json();
+      })
+      .then((data) => {
+        console.log('API Response:', data);
         setMessage('You have successfully logged in!');
-        
-        const user_id = data.user_id || data.user?.id; 
-        
-        if (user_id) {
-            navigate(`/api/users/${user_id}/itineraries`);
+
+        const user = {
+          user_id: data.user_id,
+          first_name: data.first_name, 
+          last_name: data.last_name,    
+          date_of_birth: data.date_of_birth, 
+          email: data.email,             
+        };
+
+        setUser(data.user); // Set the user object
+        if (data.user_id) {
+          navigate(`/api/users/${data.user_id}/itineraries`);
         } else {
-            console.error('User ID not found in response:', data);
-            setMessage('Login failed: User ID not found.');
+          console.error('User ID not found in response:', data);
+          setMessage('Login failed: User ID not found.');
         }
-    })
-    .catch(error => {
+      })
+      .catch((error) => {
         console.error('Error:', error);
         setMessage('Login failed. Please try again.');
-    });
+      });
   };
 
   return (
@@ -89,7 +102,6 @@ function AuthForm() {
           </div>
           <form onSubmit={handleSubmit}>
             <h2 className="text-center text-lg font-semibold mb-4">{isLogin ? 'Login' : 'Sign Up'}</h2>
-
             {!isLogin && (
               <>
                 <div className="mb-4">
@@ -104,7 +116,6 @@ function AuthForm() {
                     required
                   />
                 </div>
-
                 <div className="mb-4">
                   <label htmlFor="last_name" className="block text-gray-700">Last Name:</label>
                   <input
@@ -117,7 +128,6 @@ function AuthForm() {
                     required
                   />
                 </div>
-
                 <div className="mb-4">
                   <label htmlFor="date_of_birth" className="block text-gray-700">Date of Birth:</label>
                   <input
@@ -132,7 +142,6 @@ function AuthForm() {
                 </div>
               </>
             )}
-
             <div className="mb-4">
               <label htmlFor="email" className="block text-gray-700">Email:</label>
               <input
@@ -145,7 +154,6 @@ function AuthForm() {
                 required
               />
             </div>
-
             <div className="mb-4">
               <label htmlFor="password" className="block text-gray-700">Password:</label>
               <input
@@ -158,7 +166,6 @@ function AuthForm() {
                 required
               />
             </div>
-
             {!isLogin && (
               <div className="mb-4">
                 <label htmlFor="confirmPassword" className="block text-gray-700">Confirm Password:</label>
@@ -173,7 +180,6 @@ function AuthForm() {
                 />
               </div>
             )}
-
             <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">{isLogin ? 'Login' : 'Sign Up'}</button>
           </form>
         </div>

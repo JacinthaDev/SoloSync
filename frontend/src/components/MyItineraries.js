@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext';
 
-const MyItineraries = ({ user_id }) => {
+const MyItineraries = ({ user, user_id }) => {
   const [itineraries, setItineraries] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItineraries = async () => {
       try {
-        const response = await fetch(`/api/users/${user_id}/itineraries`);
+        const response = await fetch(`/api/users/${user.user_id}/itineraries`);
         const data = await response.json();
         setItineraries(data);
       } catch (error) {
