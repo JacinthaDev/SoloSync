@@ -48,6 +48,13 @@ const Feed = () => {
             >
               <div className="absolute inset-0 bg-yellow-200 opacity-50 mx-auto" />
               <div className="relative p-6 z-10 flex flex-col justify-between h-full">
+                <div className="flex justify-center">
+                  <img
+                    src={itinerary.user.profile_picture_url || '/default.png'}
+                    alt={`${itinerary.user.first_name} ${itinerary.user.last_name}`}
+                    className="w-16 h-16 rounded-full mb-2"
+                  />
+                </div>
                 <div className="mt-4 border border-gray-300 bg-white rounded-lg shadow-md p-4">
                   <h3 className="text-xl font-semibold text-black text-center">
                     {itinerary.city}, {itinerary.country}
@@ -60,7 +67,7 @@ const Feed = () => {
                   <div className="text-black mb-4 text-center">
                     <p className="font-bold">
                       Why{' '}
-                      <Link to={`/api/users/${itinerary.user_id}/itineraries`} className="text-blue-400 hover:underline"> 
+                      <Link to={`/api/users/${itinerary.user_id}/user-profile`} className="text-blue-400 hover:underline"> 
                         {itinerary.user.first_name} {itinerary.user.last_name}
                       </Link>{' '}
                       is traveling:

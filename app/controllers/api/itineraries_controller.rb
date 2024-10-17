@@ -4,8 +4,6 @@ require 'uri'
 
 module Api
   class ItinerariesController < ApplicationController
-    #before_action :authenticate_user!
-    #before_action countries, only: %i[cities]
     before_action :set_user, only: %i[create update destroy index]
     before_action :set_itinerary, only: %i[ update destroy edit]
 
@@ -17,13 +15,14 @@ module Api
         .limit(params[:limit] || 10)         
         .offset(params[:offset] || 0)
     
-      render json: itineraries.as_json(include: { user: { only: [:first_name, :last_name] } }), status: :ok
+        render json: itineraries.as_json(include: { user: { only: [:first_name, :last_name], methods: :profile_picture_url } }), status: :ok
     end 
 
     def index
-      render json: @user.itineraries, status: :ok
+      itineraries = @user.itineraries.order(:start_date)
+      render json: itineraries, status: :ok
     end
-
+    
     def show
       itinerary = Itinerary.find_by(id: params[:id], user_id: params[:user_id])
       if itinerary

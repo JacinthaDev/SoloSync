@@ -34,17 +34,6 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def update
-    if params[:user][:profile_picture]
-      @user.profile_picture = params[:user][:profile_picture]
-    end
-  
-    if @user.update(user_params)
-      render json: @user, status: :ok
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
 
   def update
     @user = User.find(params[:id])
@@ -59,6 +48,19 @@ class Api::UsersController < ApplicationController
       render json: @user.errors, status: :unprocessable_entity
     end
   end
+
+  def show_other_user
+    user = User.find(params[:user_id])
+    itineraries = user.itineraries
+  
+    render json: {
+      user: user.as_json.merge(
+        profile_picture: user.profile_picture.attached? ? url_for(user.profile_picture) : nil
+      ),
+      itineraries: itineraries
+    }
+  end
+  
 
   private
 

@@ -47,7 +47,6 @@ const EditComment = () => {
     });
 
     if (response.ok) {
-      console.log('Comment updated successfully');
       navigate(`/api/users/${user_id}/itineraries/${itinerary_id}/show`);
     } else {
       console.error('Failed to update comment');

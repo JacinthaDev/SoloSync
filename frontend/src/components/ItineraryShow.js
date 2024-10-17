@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../UserContext';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
+
 
 const ItineraryShow = () => {
   const { user_id, itinerary_id } = useParams();
   const { user } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromProfile = location.state
   const [itinerary, setItinerary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState('');
@@ -104,7 +106,6 @@ const ItineraryShow = () => {
     return format(date, 'MMMM d, yyyy');
   };
   
-
   return (
     <div className="flex flex-col items-center mt-8">
       <div className="relative grid overflow-hidden rounded-lg shadow-md bg-yellow-100 w-full max-w-md min-h-[20rem]">
@@ -167,6 +168,7 @@ const ItineraryShow = () => {
             <button
               type="submit"
               className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition w-full"
+              onClick={() => window.location.reload()}
             >
               Post Comment
             </button>
@@ -175,12 +177,22 @@ const ItineraryShow = () => {
       </div>
       
       <div className="flex justify-center mt-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition"
-        >
-          Back to Itineraries
-        </button>
+        {!fromProfile && (
+          <button
+            onClick={() => window.location.href = '/feed'}
+            className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition"
+          >
+            Back to Itineraries
+          </button>
+        )}
+        {fromProfile && (
+          <button
+            onClick={() => window.history.back()}
+            className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-500 transition"
+          >
+            Go Back to {itinerary.user.first_name}'s Profile
+          </button>
+        )}
       </div>
     </div>
   );

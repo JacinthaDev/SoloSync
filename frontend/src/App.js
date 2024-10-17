@@ -11,6 +11,7 @@ import ItineraryShow from './components/ItineraryShow';
 import EditComment from './components/EditComment';
 import { UserProvider } from './UserContext';
 import EditProfile from './components/EditProfile';
+import OtherUserProfile from './components/OtherUserProfile';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function Main() {
           <Route path="/api/users/:user_id/itineraries/:itinerary_id/comments/:comment_id/edit" element={<EditComment />} />
           <Route path="profile" element={<Profile />} />
           <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="/api/users/:user_id/user-profile" element={<OtherUserProfile />} />
         </Routes>
       </div>
     </div>

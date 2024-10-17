@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   post '/login', to: 'users/sessions#create'
   delete '/logout', to: 'users/sessions#destroy'
 
+  get '/api/users/:user_id/user-profile', to: 'api/users#show_other_user'
+
   resources :users, only: [:index, :show]
 
 

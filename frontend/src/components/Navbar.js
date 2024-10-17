@@ -28,9 +28,9 @@ function Navbar() {
   return (
     <nav className="bg-white shadow rounded-lg mb-6">
       <div className="container mx-auto flex justify-between items-center p-4">
-        <Link className="text-3xl font-bold text-yellow-400" to="/">
+        <span className="text-3xl font-bold text-yellow-400">
           SoloSync
-        </Link>
+        </span>
         <div className="flex space-x-4">
           {location.pathname !== '/feed' && (
             <Link
@@ -40,16 +40,17 @@ function Navbar() {
               Feed
             </Link>
           )}
+
           {location.pathname !== '/profile' && (
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to="/profile"
-              // to={`/api/users/${user.user_id}/profile`}
             >
               Profile
             </Link>
           )}
-          {location.pathname === '/feed' && user && (
+
+          {location.pathname !== `/api/users/${user?.id}/itineraries` && user && (
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to={`/api/users/${user.id}/itineraries`}
@@ -57,6 +58,7 @@ function Navbar() {
               My Trips
             </Link>
           )}
+
           <button
             onClick={handleLogout}
             className="text-gray-700 hover:text-blue-600 transition-colors"

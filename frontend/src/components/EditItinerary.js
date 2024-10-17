@@ -4,7 +4,6 @@ import { useUser } from '../UserContext';
 
 const EditItinerary = () => {
   const { user } = useUser();
-  console.log(user)
   const [itinerary, setItinerary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,7 +61,6 @@ const EditItinerary = () => {
   if (error) return <p>Error: {error}</p>;
 
   const today = new Date().toISOString().split('T')[0];
-  console.log(today)
 
   return (
     <div className="container mx-auto p-6 bg-yellow-100 rounded-lg shadow-md max-w-lg mt-5">

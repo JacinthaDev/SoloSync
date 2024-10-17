@@ -59,7 +59,6 @@ function AuthForm() {
         return response.json();
       })
       .then((data) => {
-        console.log('API Response:', data);
         setMessage('You have successfully logged in!');
 
         const user = {

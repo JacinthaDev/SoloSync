@@ -106,7 +106,6 @@ const TripForm = () => {
         throw new Error('Failed to create itinerary');
       }
       const result = await response.json();
-      console.log('Itinerary created:', result);
 
       setFormData({
         city: '',
@@ -213,7 +212,9 @@ const TripForm = () => {
           </label>
         )}
         
-        <button type="submit" className="w-full bg-blue-400 text-white font-bold p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+        <button type="submit" className="w-full bg-blue-400 text-white font-bold p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+          onClick={() => window.location.reload()}
+        > 
           Create Itinerary
         </button>
       </form>
