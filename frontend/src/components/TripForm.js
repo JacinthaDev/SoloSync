@@ -107,6 +107,7 @@ const TripForm = () => {
       }
       const result = await response.json();
       console.log('Itinerary created:', result);
+
       setFormData({
         city: '',
         country: '',

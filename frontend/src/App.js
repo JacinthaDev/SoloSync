@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AuthForm from './components/AuthForm';
 import HomePage from './components/HomePage';  
+import Feed from "./components/Feed";
+import Profile from "./components/Profile";
 import EditItinerary from './components/EditItinerary';  
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
           <Route path="/" element={<AuthForm />} /> 
           <Route path="/api/users/:user_id/itineraries" element={<HomePage />} />
           <Route path="/api/users/:user_id/itineraries/:id/edit" element={<EditItinerary />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
     </div>

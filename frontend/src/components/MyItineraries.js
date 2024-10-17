@@ -28,7 +28,6 @@ const MyItineraries = ({ user_id }) => {
     }
   };
 
-  // Update handleEdit to accept an itinerary ID
   const handleEdit = (id) => {
     navigate(`/api/users/${user_id}/itineraries/${id}/edit`);
   };
@@ -36,14 +35,14 @@ const MyItineraries = ({ user_id }) => {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long', // Full month name
+      month: 'long',
       day: 'numeric',
     });
   };
 
   return (
     <div className="flex flex-col items-center">
-  <h1 className="text-2xl font-bold mb-6 mt-8">My Itineraries</h1> {/* Added margin before the title */}
+  <h1 className="text-2xl font-bold mb-6 mt-8">My Itineraries</h1>
   {itineraries.map((itinerary) => (
     <div
       key={itinerary.id}
@@ -60,8 +59,18 @@ const MyItineraries = ({ user_id }) => {
       </p>
       <p className="text-gray-700 mb-4">{itinerary.description}</p>
       <div className="flex justify-center gap-2 mt-2 mb-4"> 
-        <button className="btn btn-primary">Edit</button>
-        <button className="btn btn-danger">Delete</button>
+        <button 
+          className="btn btn-primary"
+          onClick={() => handleEdit(itinerary.id)}
+          >
+            Edit
+          </button>
+        <button 
+          className="btn btn-danger"
+          onClick={() => handleDelete(itinerary.id)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   ))}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TripForm from './TripForm'; 
+import Navbar from './Navbar'; 
 import MyItineraries from './MyItineraries'; 
 
 function HomePage() {
@@ -21,6 +22,7 @@ function HomePage() {
 
   return (
     <div className="home-page">
+      <Navbar />
       <h2>Welcome to Your Dashboard</h2>
       
       <div className="trip-section">
