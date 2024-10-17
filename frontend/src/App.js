@@ -30,7 +30,7 @@ function Main() {
           <Route path="/api/users/:user_id/itineraries" element={<HomePage />} />
           <Route path="/api/users/:user_id/itineraries/:id/edit" element={<EditItinerary />} />
           <Route path="/feed" element={<Feed />} />
-          <Route path="/api/users/:user_id/itineraries/:id/show" element={<ItineraryShow />} />
+          <Route path="/api/users/:user_id/itineraries/:itinerary_id/show" element={<ItineraryShow />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>

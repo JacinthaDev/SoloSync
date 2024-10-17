@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [user_id, setUser_id] = useState(null); 
 
-  const user_id = sessionStorage.getItem('user_id');
+  const fetchUser_id = async () => {
+    try {
+      const response = await fetch(`/api/users/${user_id}`, {
+        method: 'GET',
+        credentials: 'include', 
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user ID');
+      }
+
+      const data = await response.json();
+      console.log(data)
+      setUser_id(data.user_id); 
+    } catch (error) {
+      console.error('Error fetching user ID:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser_id(); 
+  }, []);
+
 
   const handleLogout = async () => {
     if (!user_id) {
@@ -14,24 +37,19 @@ function Navbar() {
     }
 
     try {
-      const response = await fetch(`/api/users/${user_id}/sessions`, {
+      const response = await fetch('/api/users/sign_out', {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`, 
-        },
+        credentials: 'include',
       });
 
       if (response.ok) {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user_id');
-        navigate('/');
+        setUser_id(null);
+        navigate('/'); 
       } else {
-        const errorResponse = await response.json();
-        console.error('Logout failed:', errorResponse.message);
+        console.error('Failed to log out');
       }
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error('Error logging out:', error);
     }
   };
 
@@ -58,7 +76,8 @@ function Navbar() {
               Profile
             </Link>
           )}
-          {location.pathname === '/feed' && user_id && ( 
+          {location.pathname === '/feed' && (
+
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to={`/api/users/${user_id}/itineraries`}

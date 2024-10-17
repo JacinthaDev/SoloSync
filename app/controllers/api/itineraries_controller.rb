@@ -7,7 +7,7 @@ module Api
     #before_action :authenticate_user!
     #before_action countries, only: %i[cities]
     before_action :set_user, only: %i[create update destroy index]
-    before_action :set_itinerary, only: %i[show update destroy edit]
+    before_action :set_itinerary, only: %i[ update destroy edit]
 
     def feed
       itineraries = Itinerary.includes(:user)
@@ -25,8 +25,12 @@ module Api
     end
 
     def show
-      puts "hiiiIIIIII"
-      render json: @itinerary, status: :ok
+      itinerary = Itinerary.find_by(id: params[:id], user_id: params[:user_id])
+      if itinerary
+        render json: itinerary
+      else
+        render json: { error: 'Itinerary not found' }, status: :not_found
+      end
     end
 
     def create
