@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<AuthForm />} /> 
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/api/users/:user_id/itineraries" element={<HomePage />} />
           <Route path="/api/users/:user_id/itineraries/:id/edit" element={<EditItinerary />} />
         </Routes>
       </Router>
