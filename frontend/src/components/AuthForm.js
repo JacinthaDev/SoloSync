@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AuthForm.css'; 
+import './AuthForm.css';
 
 function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: '',
-    dateOfBirth: '',
+    first_name: '',  
+    last_name: '',  
+    date_of_birth: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -27,41 +28,48 @@ function AuthForm() {
       alert('Passwords do not match!');
       return;
     }
-  
+
     console.log(`${isLogin ? 'Login' : 'Signup'} form submitted:`, formData);
 
     const url = isLogin ? '/api/login' : '/api/signup';
-  const payload = isLogin
-    ? { user: { email: formData.email, password: formData.password } }
-    : { user: { name: formData.name, dateOfBirth: formData.dateOfBirth, email: formData.email, password: formData.password, confirmPassword: formData.confirmPassword } };
+    const payload = isLogin
+      ? { user: { email: formData.email, password: formData.password } }
+      : { user: { 
+          first_name: formData.first_name, 
+          last_name: formData.last_name, 
+          date_of_birth: formData.date_of_birth, 
+          email: formData.email, 
+          password: formData.password 
+        } 
+      };
 
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-      return response.json();
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     })
-    .then(data => {
-      console.log(data);
-      setMessage('You have successfully logged in!');
-      navigate('/home');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      setMessage('Login failed. Please try again.');
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Login failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setMessage('You have successfully logged in!');
+        navigate('/home');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setMessage('Login failed. Please try again.');
+      });
   };
 
   return (
     <div className="auth-form">
-      {message && ( 
+      {message && (
         <div className="message">
           {message}
         </div>
@@ -76,26 +84,38 @@ function AuthForm() {
         {!isLogin && (
           <>
             <div className="form-group">
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="first_name">First Name:</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleChange}
-                required={!isLogin} 
+                required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="dateOfBirth">Date of Birth:</label>
+              <label htmlFor="last_name">Last Name:</label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="date_of_birth">Date of Birth:</label>
               <input
                 type="date"
-                id="dateOfBirth"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
+                id="date_of_birth"
+                name="date_of_birth"
+                value={formData.date_of_birth}
                 onChange={handleChange}
-                required={!isLogin}
+                required
               />
             </div>
           </>
@@ -123,8 +143,8 @@ function AuthForm() {
             required
           />
         </div>
-        
-        {!isLogin && ( 
+
+        {!isLogin && (
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password:</label>
             <input
