@@ -29,6 +29,7 @@ function Navbar() {
     fetchUser_id(); 
   }, []);
 
+
   const handleLogout = async () => {
     if (!user_id) {
       console.error('User ID not found');
@@ -76,6 +77,7 @@ function Navbar() {
             </Link>
           )}
           {location.pathname === '/feed' && (
+
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to={`/api/users/${user_id}/itineraries`}
