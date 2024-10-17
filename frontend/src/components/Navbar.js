@@ -7,6 +7,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, setUser } = useUser(); 
 
+
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/users/sign_out', {
@@ -48,7 +49,10 @@ function Navbar() {
               Profile
             </Link>
           )}
-          {location.pathname === '/feed' && user && (
+
+          {location.pathname === '/feed' && (
+
+
             <Link
               className="text-gray-700 hover:text-blue-600 transition-colors"
               to={`/api/users/${user.id}/itineraries`}
