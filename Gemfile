@@ -12,6 +12,7 @@ gem "puma", ">= 5.0"
 # gem "redis", ">= 4.0.1"
 
 gem 'devise'
+gem 'devise-jwt'
 gem 'rack-cors', require: 'rack/cors'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
