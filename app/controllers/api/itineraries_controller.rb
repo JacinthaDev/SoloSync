@@ -11,7 +11,8 @@ module Api
 
     def feed
       itineraries = Itinerary.includes(:user)
-        .where('end_date >= ?', Date.today)  
+        .where('end_date >= ?', Date.today)
+        .where.not(user_id: current_user.id)  
         .order(:start_date)                  
         .limit(params[:limit] || 10)         
         .offset(params[:offset] || 0)
@@ -24,6 +25,7 @@ module Api
     end
 
     def show
+      puts "hiiiIIIIII"
       render json: @itinerary, status: :ok
     end
 

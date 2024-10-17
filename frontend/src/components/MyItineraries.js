@@ -41,42 +41,45 @@ const MyItineraries = ({ user_id }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-  <h1 className="text-2xl font-bold mb-6 mt-8">My Itineraries</h1>
-  {itineraries.map((itinerary) => (
-    <div
-      key={itinerary.id}
-      className="bg-white shadow-md rounded-lg p-6 mb-6 border border-gray-300 w-full max-w-3xl" 
-    >
-      <h3 className="text-xl font-semibold mb-2">
-        {itinerary.city}, {itinerary.country}
-      </h3>
-      <p className="text-gray-700 mb-1">
-        <span className="font-medium">Start Date:</span> {formatDate(itinerary.start_date)}
-      </p>
-      <p className="text-gray-700 mb-1">
-        <span className="font-medium">End Date:</span> {formatDate(itinerary.end_date)}
-      </p>
-      <p className="text-gray-700 mb-4">{itinerary.description}</p>
-      <div className="flex justify-center gap-2 mt-2 mb-4"> 
-        <button 
-          className="btn btn-primary"
-          onClick={() => handleEdit(itinerary.id)}
+    <div className="flex flex-col items-center mt-8">
+      <div className="bg-white rounded-full shadow-lg px-6 py-3 mb-8"> 
+        <h1 className="text-3xl font-bold text-center">My Itineraries</h1>
+      </div>
+      <div className="grid grid-cols-2 gap-6 w-full max-w-4xl">
+        {itineraries.map((itinerary) => (
+          <div
+            key={itinerary.id}
+            className="relative grid min-h-[20rem] overflow-hidden rounded-lg shadow-md bg-white"
           >
-            Edit
-          </button>
-        <button 
-          className="btn btn-danger"
-          onClick={() => handleDelete(itinerary.id)}
-        >
-          Delete
-        </button>
+            <div className="absolute inset-0 bg-yellow-200 opacity-50 mx-auto" /> 
+            <div className="relative p-6 z-10 flex flex-col justify-between h-full">
+              <h3 className="text-2xl font-semibold text-blue-600 text-center">
+                {itinerary.city}, {itinerary.country}
+              </h3>
+              <p className="text-blue-600 text-center">
+                {formatDate(itinerary.start_date)} - {formatDate(itinerary.end_date)}
+              </p>
+              <p className="text-blue-600 mb-2 text-center">{itinerary.description}</p> 
+              <div className="flex justify-center gap-2 mt-2 mb-4">
+                <button
+                  className="bg-blue-400 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition"
+                  onClick={() => handleEdit(itinerary.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition"
+                  onClick={() => handleDelete(itinerary.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>        
+        ))}
       </div>
     </div>
-  ))}
-</div>
-
-  );
+  );  
 };
 
 export default MyItineraries;
